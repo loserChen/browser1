@@ -20,6 +20,7 @@ import java.net.InetAddress;
 import java.net.URL;
 import java.net.UnknownHostException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 
 import javax.swing.JFrame;
@@ -58,7 +59,6 @@ import org.eclipse.swt.browser.StatusTextListener;
 import org.eclipse.swt.browser.TitleEvent;
 import org.eclipse.swt.browser.TitleListener;
 import org.eclipse.swt.browser.WindowEvent;
-import org.eclipse.swt.custom.CTabItem;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.ProgressBar;
@@ -111,10 +111,13 @@ public class browser {
 	private String newUrl;
 	private boolean openNewItem=true;
 	private Display display;
-	private Browser browser_new;
-	private TabItem tabItem_new;
 	private String DEFAULT_BLANK_URL="about:blank"; 
-
+	private String Ping;								//Ping
+	java.util.List ping = new ArrayList(); 	
+	java.util.List collection = new ArrayList();// 保存历史记录的列表
+	private TabItem tabItem_1;
+	private Browser browser_default;
+	private TabItem tabitem_default;
 	/**
 	 * Launch the application.
 	 * @param args
@@ -181,13 +184,13 @@ public class browser {
 		fd_tabFolder.right = new FormAttachment(100);
 		tabFolder.setLayoutData(fd_tabFolder);
 		
-		tabItem = new TabItem(tabFolder, SWT.NONE);
+		tabitem_default = new TabItem(tabFolder, SWT.NONE);
 		
-		browser = new Browser(tabFolder, SWT.NONE);
-		tabItem.setControl(browser);
+		browser_default = new Browser(tabFolder, SWT.NONE);
+		tabitem_default.setControl(browser_default);
 		url=homePage;
-		browser.setUrl(url);
-		tabFolder.setSelection(tabItem);
+		browser_default.setUrl(url);
+		tabFolder.setSelection(tabitem_default);
 	}
 	private void initTool(){
 		composite = new Composite(shlBrowser, SWT.NONE);
@@ -262,7 +265,7 @@ public class browser {
 		gd_btnGetIP.widthHint = 40;
 		gd_btnGetIP.heightHint = 30;
 		btnGetIP.setLayoutData(gd_btnGetIP);
-		btnGetIP.setText("GetIp");
+		btnGetIP.setText("Ip");
 		
 		btnPing = new Button(composite, SWT.NONE);
 		gd_btnPing = new GridData(SWT.LEFT, SWT.CENTER, false, false, 1, 1);
@@ -272,7 +275,7 @@ public class browser {
 		btnPing.setText("Ping");
 		
 		btnHistory = new Button(composite, SWT.NONE);
-		btnHistory.setFont(SWTResourceManager.getFont("Microsoft YaHei UI", 8, SWT.NORMAL));
+		btnHistory.setFont(SWTResourceManager.getFont("Microsoft YaHei UI", 6, SWT.NORMAL));
 		gd_btnHistory = new GridData(SWT.LEFT, SWT.CENTER, false, false, 1, 1);
 		gd_btnHistory.heightHint = 40;
 		gd_btnHistory.widthHint = 40;
@@ -280,7 +283,7 @@ public class browser {
 		btnHistory.setText("History");
 		
 		btnSource = new Button(composite, SWT.NONE);
-		btnSource.setFont(SWTResourceManager.getFont("Microsoft YaHei UI", 8, SWT.NORMAL));
+		btnSource.setFont(SWTResourceManager.getFont("Microsoft YaHei UI", 6, SWT.NORMAL));
 		gd_btnSource = new GridData(SWT.LEFT, SWT.CENTER, false, false, 1, 1);
 		gd_btnSource.widthHint = 40;
 		gd_btnSource.heightHint = 40;
@@ -309,6 +312,7 @@ public class browser {
 		 btnStop.setEnabled(false);
 		 tabItem=tabFolder.getItem(tabFolder.getSelectionIndex());
 		 browser=(Browser) tabItem.getControl();
+		 
 		tabFolder.addMouseListener(new MouseAdapter()
  		{
  			@Override
@@ -358,26 +362,24 @@ public class browser {
  				}
  			}
  		});
-		tabFolder.addListener(SWT.MouseDoubleClick, new Listener() {
-			@Override
-			public void handleEvent(Event event) {
-				if(event.button != 1) {	//按键不是左键跳出. 1左键,2中键,3右键
-					return;
-				}
-				TabItem tab = tabFolder.getItem(new Point(event.x, event.y));  
-				if(tabFolder.getItemCount()!=1)
-					{
-						//不是只存在一个标签的情况下
-						tab.dispose();
-					}
-					else
-					{
-						//只有一个标签
-						browser.setUrl(":blank");
-						browser.setText("");
-					}
-			}
-		});
+		 tabFolder.addMouseListener(new MouseAdapter() {  
+	            // 双击关闭选中的浏览器窗口  
+	            public void mouseDoubleClick(final MouseEvent e) {
+	            	TabItem tab = tabFolder.getItem(new Point(e.x, e.y)); 
+	            	if(tabFolder.getItemCount()!=1)
+						{
+							//不是只存在一个标签的情况下
+							
+							tab.dispose();
+						}
+						else
+						{
+							//只有一个标签
+							browser.setUrl(":blank");
+							browser.setText("");
+						}
+	            }  
+	        });  
 		browser.addLocationListener(new LocationAdapter() 
 		  {
 			  
@@ -468,8 +470,8 @@ public class browser {
 	  	browser.addOpenWindowListener(new OpenWindowListener() {// 在当前页面中打开点击的链接页面
 	  	 
 			public void open(WindowEvent e) {
-	  	      browser_new = new Browser(tabFolder, SWT.NONE);
-	  	      tabItem_new = new TabItem(tabFolder, SWT.NONE);
+	  	      Browser browser_new = new Browser(tabFolder, SWT.NONE);
+	  	      TabItem tabItem_new = new TabItem(tabFolder, SWT.NONE);
 	  	      tabItem_new.setControl(browser_new);
 	  	      tabFolder.setSelection(tabItem_new);//新打开的页面标签置顶
 	  	      tabFolder.redraw();//刷新容器
@@ -583,6 +585,101 @@ public class browser {
 				}
 			 }
 		});
+		 btnSource.addSelectionListener(new SelectionAdapter() 
+		  {
+			  @Override
+				public void widgetDefaultSelected(SelectionEvent arg0) 
+				{
+					// TODO 自动生成的方法存根
+					
+				}
+				@Override
+				public void widgetSelected(SelectionEvent arg0) 
+				{
+					url=combo_URL.getText();
+					try  {
+			            getSource(url);
+			        }  catch (Exception e1) 
+			        {
+			            // TODO Auto-generated catch block
+			            e1.printStackTrace();
+			        }
+					//弹出信息面板显示浏览记录
+					try 
+					{
+						new outPutHistory(Source);
+					} 
+					catch (IOException e) 
+					{
+						// TODO 自动生成的 catch 块
+						e.printStackTrace();
+					}
+				}
+		  });
+		//获取Ping
+		  btnPing.addSelectionListener(new SelectionAdapter() 
+		  {
+			  @Override
+				public void widgetSelected(SelectionEvent e) 
+			  {
+
+					String serverIP = "127.0.0.1";
+
+					try {
+						Runtime ce = Runtime.getRuntime();
+						InputStream in = (InputStream) ce.exec("ping " + serverIP).getInputStream();
+						BufferedInputStream bin = new BufferedInputStream(in);
+						byte pingInfo[] = new byte[100];
+						int n;
+						while ((n = bin.read(pingInfo, 0, 100)) != -1) 
+						{
+							Ping = null;
+							Ping = new String(pingInfo, 0, n);
+							ping.add(Ping);
+						}
+						ping.add("Over!\n\n");
+						try 
+						{
+							//Ping=Ping+"Over!\n\n";
+							new outPutHistory(ping.toString());
+						} 
+						catch (IOException e1) 
+						{
+							// TODO 自动生成的 catch 块
+							e1.printStackTrace();
+						}
+						
+					} catch (Exception ee) {
+						System.out.println(ee);
+					}
+
+
+				}
+		  });
+		  btnAdd.addSelectionListener(new SelectionAdapter() {
+				@Override
+				public void widgetSelected(SelectionEvent e) {
+					String Address=combo_URL.getText().trim();
+					try {
+						Runtime ce = Runtime.getRuntime();
+						InputStream in;
+						in = (InputStream) ce.exec("ping " + Address).getInputStream();
+						BufferedInputStream bin = new BufferedInputStream(in);
+						byte pingInfo[] = new byte[100];
+						int n;
+						while ((n = bin.read(pingInfo, 0, 100)) != -1) 
+						{
+							Ping = null;
+							Ping = new String(pingInfo, 0, n);
+							collection.add(Address);
+						}
+						new outPutHistory(collection.toString());
+					} catch (IOException e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					}
+				}
+			});
 	}
 	public void save(String history) 
 	{
@@ -651,22 +748,23 @@ public class browser {
 	    }
 	} 
 	 private Browser openNewBrowserTab() {  
-		    browser_new = new Browser(tabFolder, SWT.NONE);
+		    Browser browser_new = new Browser(tabFolder, SWT.NONE);
 		    initialize(browser); 
- 	        tabItem_new = new TabItem(tabFolder, SWT.NONE);
+ 	        TabItem tabItem_new = new TabItem(tabFolder, SWT.NONE);
  	        tabItem_new.setControl(browser_new);
 	        tabFolder.setSelection(tabItem_new);      
 	        tabItem_new.setText(DEFAULT_BLANK_URL);  
 	        tabItem_new.setToolTipText(DEFAULT_BLANK_URL);  
 	        combo_URL.setText(DEFAULT_BLANK_URL);  
 	        combo_URL.setFocus();  
+	        openNewItem=true;
 	        return browser;
 	    }  
 	 private void initialize(final Browser browser) {  
 	        browser.addOpenWindowListener(new OpenWindowListener() {    //打开一个新的浏览器窗口事件  
 	            public void open(WindowEvent event) {  
 	                event.browser = openNewBrowserTab();  
-	                display.asyncExec(new Runnable(){
+	                event.display.asyncExec(new Runnable(){
 	     	  	       public void run() {
 	     	  	        method(); 
 	     	  	       }
@@ -697,6 +795,28 @@ public class browser {
 			 
 		 }
 	 }
+	//获取源代码
+		public void getSource (String url) 
+		{
+			try 
+			{
+				String linesep,htmlLine;
+				linesep=System.getProperty("line.separator");
+				Source="";
+				//根据URL得到的源代码
+				java.net.URL source =new URL(url);  
+				InputStream in=new BufferedInputStream(source.openStream());
+				BufferedReader br=new BufferedReader(new InputStreamReader(in));
+				while((htmlLine=br.readLine())!=null)
+				{
+					Source=Source+htmlLine+linesep;
+				}
+				
+			 } 
+			catch (Exception e) 
+			{
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
 }
-
-
