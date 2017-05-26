@@ -66,10 +66,10 @@ import org.eclipse.swt.widgets.ProgressBar;
 public class browser {
 
 	protected Shell shlBrowser;
-	private String Source;
-	private String url;
-	private String homePage = "www.zjut.edu.cn";
-	private TabFolder tabFolder;
+	private String Source;                                 //æºä»£ç 
+	private String url;                                    //url
+	private String homePage = "www.zjut.edu.cn";           //ä¸»é¡µ
+	private TabFolder tabFolder;                           //browserçš„å®¹å™¨
 	private FormData fd_composite;
 	private FormData fd_tabFolder;
 	private Menu menu;
@@ -77,52 +77,63 @@ public class browser {
 	private MenuItem menuItem;
 	private MenuItem mntmNewItem_1;
 	private TabItem tabItem;
-	private Browser browser;
+	private Browser browser;                              //æµè§ˆå™¨
 	private Composite composite;
-	private Button btnBack;
-	private GridData gd_btnBack;
-	private Button btnForword;
+	private Button btnBack;                               //åé€€æŒ‰é’®
+	private GridData gd_btnBack;                         
+	private Button btnForword;                             //å‰è¿›
 	private GridData gd_btnForword;
-	private Button btnStop;
+	private Button btnStop;                                //åœæ­¢æŒ‰é’®
 	private GridData gd_btnStop;
 	private Combo combo_URL;
 	private Button btnRefresh;
 	private GridData gd_btnRefresh;
-	private Button btnPage;
+	private Button btnPage;                                //å›åˆ°ä¸»é¡µ
 	private GridData gd_btnPage;
-	private Button btnAdd;
+	private Button btnAdd;                                 //æ·»åŠ åˆ°æ”¶è—å¤¹
 	private GridData gd_btnAdd;
 	private Label lblNewLabel;
-	private Combo combo_IP;
+	private Combo combo_IP;                                 //IPæ 
 	private GridData gd_combo_IP;
-	private Button btnGetIP;
-	private GridData gd_btnGetIP;
-	private Button btnPing;
+	private Button btnGetIP;                                //è·å–
+	private GridData gd_btnGetIP;             
+	private Button btnPing;                                 //è·å–Ping
 	private GridData gd_btnPing;
-	private Button btnHistory;
+	private Button btnHistory;                              //æŸ¥çœ‹å†å²çºªå½•
 	private GridData gd_btnHistory;
-	private Button btnSource;
+	private Button btnSource;                               //è·å–æºä»£ç 
 	private GridData gd_btnSource;
 	private Label lblStatus;
 	private FormData fd_lblStatus;
-	private ProgressBar progressBar;
+	private ProgressBar progressBar;                        //è¿›åº¦æ¡
 	private FormData fd_progressBar;
-	private boolean loadCompleted;
-	private String newUrl;
+	private boolean loadCompleted;                           //è¡¨ç¤ºå½“å‰é¡µé¢æ˜¯å¦å®Œå…¨å¯¼å…¥
+
 	private boolean openNewItem=true;
 	private Display display;
 	private String DEFAULT_BLANK_URL="about:blank"; 
-	private String Ping;								//Ping
+	private String Ping;								      //Ping
 	java.util.List ping = new ArrayList(); 	
-	java.util.List collection = new ArrayList();// ±£´æÀúÊ·¼ÇÂ¼µÄÁĞ±í
-	private TabItem tabItem_1;
+	java.util.List collection = new ArrayList();              // æ”¶è—å¤¹
+	private TabItem tabItem_1;                               //æ ‡ç­¾
 	private Browser browser_default;
 	private TabItem tabitem_default;
+	
+	static String array[]=new String[5];
+	static Menu menu_1;
+	static MenuItem mntmHistory_1;
+	static MenuItem mntmHistory_2;
+	static MenuItem mntmHistory_3;
+	static MenuItem mntmHistory_4;
+	static MenuItem mntmHistory_5;
+	static MenuItem mntmHistoryDeletion;
+	private static int count=0;
 	/**
 	 * Launch the application.
 	 * @param args
 	 */
 	public static void main(String[] args) {
+		
 		try {
 			browser window = new browser();
 			window.open();
@@ -175,9 +186,96 @@ public class browser {
 		mntmNewItem.setText("\u7F16\u8F91");
 		
 		mntmNewItem_1 = new MenuItem(menu, SWT.NONE);
-		mntmNewItem_1.setText("\u5173\u4E8E");
+		mntmNewItem_1.setText("å…³äº");
+		
+		MenuItem mntmHistory = new MenuItem(menu, SWT.CASCADE);
+		mntmHistory.setText("History");
+		
+		menu_1 = new Menu(mntmHistory);
+		mntmHistory.setMenu(menu_1);
+		mntmHistory_1 = new MenuItem(menu_1, SWT.NONE);
+		mntmHistory_2 = new MenuItem(menu_1, SWT.NONE);
+		mntmHistory_3 = new MenuItem(menu_1, SWT.NONE);
+		mntmHistory_4 = new MenuItem(menu_1, SWT.NONE);
+		mntmHistory_5 = new MenuItem(menu_1, SWT.NONE);
+		mntmHistoryDeletion=new MenuItem(menu_1, SWT.NONE);
+		mntmHistoryDeletion.setText("æ¸…é™¤å†å²è®°å½•");
+		for(int i=0;i<5;i++)
+		{
+			array[i]="";
+		}
+		
+		mntmHistory_1.addSelectionListener(new SelectionListener()
+		{
+			public void widgetDefaultSelected(SelectionEvent arg0)
+			{}
+			public void widgetSelected(SelectionEvent arg0) 
+			{
+				combo_URL.setText(array[0]);	
+				browser.setUrl(array[0]);
+			}
+		});
+		mntmHistory_2.addSelectionListener(new SelectionListener()
+		{
+			public void widgetDefaultSelected(SelectionEvent arg0)
+			{}
+			public void widgetSelected(SelectionEvent arg0) 
+			{
+				combo_URL.setText(array[1]);	
+				browser.setUrl(array[1]);
+			}
+		});
+		mntmHistory_3.addSelectionListener(new SelectionListener()
+		{
+			public void widgetDefaultSelected(SelectionEvent arg0)
+			{}
+			public void widgetSelected(SelectionEvent arg0) 
+			{
+				combo_URL.setText(array[2]);	
+				browser.setUrl(array[2]);
+			}
+		});
+		mntmHistory_4.addSelectionListener(new SelectionListener()
+		{
+			public void widgetDefaultSelected(SelectionEvent arg0)
+			{}
+			public void widgetSelected(SelectionEvent arg0) 
+			{
+				combo_URL.setText(array[3]);	
+				browser.setUrl(array[3]);
+			}
+		});
+		mntmHistory_5.addSelectionListener(new SelectionListener()
+		{
+			public void widgetDefaultSelected(SelectionEvent arg0)
+			{}
+			public void widgetSelected(SelectionEvent arg0) 
+			{
+				combo_URL.setText(array[4]);	
+				browser.setUrl(array[4]);
+			}
+		});
+		mntmHistoryDeletion.addSelectionListener(new SelectionListener()
+		{
+			public void widgetDefaultSelected(SelectionEvent arg0)
+			{}
+			public void widgetSelected(SelectionEvent arg0) 
+			{
+				for(int i=0;i<count;i++)
+				{
+					array[i]="";
+					
+				}
+				System.out.println(array[0]);
+				mntmHistory_1.setText(array[0]);
+				mntmHistory_2.setText(array[1]);
+				mntmHistory_3.setText(array[2]);
+				mntmHistory_4.setText(array[3]);
+				mntmHistory_5.setText(array[4]);
+			}
+		});
 	}
-	private void initBrowser(){
+	private void initBrowser(){//æµè§ˆå™¨çš„åˆå§‹åŒ–
 		tabFolder = new TabFolder(shlBrowser, SWT.NONE);
 		fd_tabFolder = new FormData();
 		fd_tabFolder.left = new FormAttachment(0);
@@ -192,7 +290,7 @@ public class browser {
 		browser_default.setUrl(url);
 		tabFolder.setSelection(tabitem_default);
 	}
-	private void initTool(){
+	private void initTool(){//å·¥å…·æ çš„åˆå§‹åŒ–
 		composite = new Composite(shlBrowser, SWT.NONE);
 		fd_tabFolder.top = new FormAttachment(0, 97);
 		composite.setLayout(new GridLayout(8, false));
@@ -259,21 +357,21 @@ public class browser {
 		gd_combo_IP = new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1);
 		gd_combo_IP.heightHint = 30;
 		combo_IP.setLayoutData(gd_combo_IP);
-		
+//è·å–IPæŒ‰é’®	
 		btnGetIP = new Button(composite, SWT.NONE);
 		gd_btnGetIP = new GridData(SWT.LEFT, SWT.CENTER, false, false, 1, 1);
 		gd_btnGetIP.widthHint = 40;
 		gd_btnGetIP.heightHint = 30;
 		btnGetIP.setLayoutData(gd_btnGetIP);
 		btnGetIP.setText("Ip");
-		
+//PingæŒ‰é’®	
 		btnPing = new Button(composite, SWT.NONE);
 		gd_btnPing = new GridData(SWT.LEFT, SWT.CENTER, false, false, 1, 1);
 		gd_btnPing.heightHint = 40;
 		gd_btnPing.widthHint = 40;
 		btnPing.setLayoutData(gd_btnPing);
 		btnPing.setText("Ping");
-		
+//å†å²è®°å½•æŒ‰é’®		
 		btnHistory = new Button(composite, SWT.NONE);
 		btnHistory.setFont(SWTResourceManager.getFont("Microsoft YaHei UI", 6, SWT.NORMAL));
 		gd_btnHistory = new GridData(SWT.LEFT, SWT.CENTER, false, false, 1, 1);
@@ -281,7 +379,7 @@ public class browser {
 		gd_btnHistory.widthHint = 40;
 		btnHistory.setLayoutData(gd_btnHistory);
 		btnHistory.setText("History");
-		
+//æºä»£ç æŒ‰é’®
 		btnSource = new Button(composite, SWT.NONE);
 		btnSource.setFont(SWTResourceManager.getFont("Microsoft YaHei UI", 6, SWT.NORMAL));
 		gd_btnSource = new GridData(SWT.LEFT, SWT.CENTER, false, false, 1, 1);
@@ -290,7 +388,7 @@ public class browser {
 		btnSource.setLayoutData(gd_btnSource);
 		btnSource.setText("Source");
 	}
-	private void initStatus(){
+	private void initStatus(){//çŠ¶æ€æ çš„åˆå§‹åŒ–
 		lblStatus = new Label(shlBrowser, SWT.NONE);
 		fd_tabFolder.bottom = new FormAttachment(lblStatus, -6);
 		fd_lblStatus = new FormData();
@@ -304,77 +402,77 @@ public class browser {
 		fd_progressBar.top = new FormAttachment(tabFolder, 6);
 		fd_progressBar.left = new FormAttachment(lblStatus, 132);
 		progressBar.setLayoutData(fd_progressBar);
-		progressBar.setVisible(false);// ´ò¿ª¹ı³Ì³õÊ¼²»¿É¼û
+		progressBar.setVisible(false);// æ‰“å¼€è¿‡ç¨‹åˆå§‹ä¸å¯è§
 	}
-	private void method(){
+	private void method(){//å…·ä½“æ“ä½œå…¨éƒ¨å°è£…åœ¨ä¸€èµ·
 		 btnBack.setEnabled(false);
 		 btnForword.setEnabled(false);
 		 btnStop.setEnabled(false);
 		 tabItem=tabFolder.getItem(tabFolder.getSelectionIndex());
 		 browser=(Browser) tabItem.getControl();
-		 
+		
 		tabFolder.addMouseListener(new MouseAdapter()
- 		{
- 			@Override
- 			public void mouseUp(MouseEvent e) {
- 				if(e.button==3){//ÓÒ¼ü
- 					Menu menu_itemRightMouse=new Menu(shlBrowser,SWT.POP_UP);
- 					tabFolder.setMenu(menu_itemRightMouse);
- 					MenuItem menuItem_itemClose=new MenuItem(menu_itemRightMouse,SWT.NONE);
- 					menuItem_itemClose.setText("¹Ø±Õµ±Ç°±êÇ©");
- 					menuItem_itemClose.addSelectionListener(new SelectionAdapter()
- 					{
- 						@Override
- 						public void widgetSelected(SelectionEvent e) 
- 						{
- 							if(tabFolder.getItemCount()!=1)
- 							{
- 								//²»ÊÇÖ»´æÔÚÒ»¸ö±êÇ©µÄÇé¿öÏÂ
- 								
- 								tabItem.dispose();
- 							}
- 							else
- 							{
- 								//Ö»ÓĞÒ»¸ö±êÇ©
- 								browser.setUrl(":blank");
- 								browser.setText("");
- 							}
- 						}
- 					});
- 					MenuItem menuItem_itemCloseAll=new MenuItem(menu_itemRightMouse,SWT.NONE);
- 					menuItem_itemCloseAll.setText("¹Ø±ÕËùÓĞ±êÇ©");
- 					menuItem_itemCloseAll.addSelectionListener(new SelectionAdapter()
- 					{
- 						@Override
- 						public void widgetSelected(SelectionEvent e) 
- 						{
- 							shlBrowser.close();
- 						}
- 					});
- 					MenuItem menuItem_openNewItem=new MenuItem(menu_itemRightMouse, SWT.NONE);
- 					menuItem_openNewItem.setText("´ò¿ªĞÂÑ¡Ïî¿¨");
- 					menuItem_openNewItem.addSelectionListener(new SelectionAdapter() {
- 						public void widgetSelected(SelectionEvent e)
- 						{
- 							openNewBrowserTab();
- 						}
-					});
- 				}
- 			}
- 		});
-		 tabFolder.addMouseListener(new MouseAdapter() {  
-	            // Ë«»÷¹Ø±ÕÑ¡ÖĞµÄä¯ÀÀÆ÷´°¿Ú  
-	            public void mouseDoubleClick(final MouseEvent e) {
-	            	TabItem tab = tabFolder.getItem(new Point(e.x, e.y)); 
-	            	if(tabFolder.getItemCount()!=1)
+		{
+			@Override
+			public void mouseUp(MouseEvent e) {
+				if(e.button==3){//å³é”®
+					Menu menu_itemRightMouse=new Menu(shlBrowser,SWT.POP_UP);
+					tabFolder.setMenu(menu_itemRightMouse);
+					MenuItem menuItem_itemClose=new MenuItem(menu_itemRightMouse,SWT.NONE);
+					menuItem_itemClose.setText("å…³é—­å½“å‰æ ‡ç­¾");
+					menuItem_itemClose.addSelectionListener(new SelectionAdapter()
+					{
+						@Override
+						public void widgetSelected(SelectionEvent e) 
 						{
-							//²»ÊÇÖ»´æÔÚÒ»¸ö±êÇ©µÄÇé¿öÏÂ
+							if(tabFolder.getItemCount()!=1)
+							{
+								//ä¸æ˜¯åªå­˜åœ¨ä¸€ä¸ªæ ‡ç­¾çš„æƒ…å†µä¸‹
+								
+								tabItem.dispose();
+							}
+							else
+							{
+								//åªæœ‰ä¸€ä¸ªæ ‡ç­¾
+								browser.setUrl(":blank");
+								browser.setText("");
+							}
+						}
+					});
+					MenuItem menuItem_itemCloseAll=new MenuItem(menu_itemRightMouse,SWT.NONE);
+					menuItem_itemCloseAll.setText("å…³é—­æ‰€æœ‰æ ‡ç­¾");
+					menuItem_itemCloseAll.addSelectionListener(new SelectionAdapter()
+					{
+						@Override
+						public void widgetSelected(SelectionEvent e) 
+						{
+							shlBrowser.close();
+						}
+					});
+					MenuItem menuItem_openNewItem=new MenuItem(menu_itemRightMouse, SWT.NONE);
+					menuItem_openNewItem.setText("æ‰“å¼€æ–°é€‰é¡¹å¡");
+					menuItem_openNewItem.addSelectionListener(new SelectionAdapter() {
+						public void widgetSelected(SelectionEvent e)
+						{
+							openNewBrowserTab();
+						}
+					});
+				}
+			}
+		});
+		 tabFolder.addMouseListener(new MouseAdapter() {  
+	            // åŒå‡»å…³é—­é€‰ä¸­çš„æµè§ˆå™¨çª—å£
+	            public void mouseDoubleClick(final MouseEvent e) {
+		TabItem tab = tabFolder.getItem(new Point(e.x, e.y)); 
+		if(tabFolder.getItemCount()!=1)
+						{
+							//ä¸æ˜¯åªå­˜åœ¨ä¸€ä¸ªæ ‡ç­¾çš„æƒ…å†µä¸‹
 							
 							tab.dispose();
 						}
 						else
 						{
-							//Ö»ÓĞÒ»¸ö±êÇ©
+							//åªæœ‰ä¸€ä¸ªæ ‡ç­¾
 							browser.setUrl(":blank");
 							browser.setText("");
 						}
@@ -382,164 +480,196 @@ public class browser {
 	        });  
 		browser.addLocationListener(new LocationAdapter() 
 		  {
-			  
+			
 
 			@Override
 			  public void changing(LocationEvent e) 
 			  {
-				  // ±íÊ¾³¬¼¶Á´½ÓµØÖ·¸Ä±äÁË
+				  // è¡¨ç¤ºè¶…çº§é“¾æ¥åœ°å€æ”¹å˜äº†
 				  if(openNewItem==false)
 				  {
-					  //ĞÂµÄÒ³ÃæÔÚÍ¬Ò»±êÇ©ÖĞ´ò¿ª
-					  btnBack.setEnabled(true);				//ºóÍË°´Å¥¿ÉÓÃ,´Ë¾äÊÇºóÍË°´Å¥¿ÉÓÃÅĞ¶¨µÄÂß¼­¿ªÊ¼µã
+					  //æ–°çš„é¡µé¢åœ¨åŒä¸€æ ‡ç­¾ä¸­æ‰“å¼€
+					  btnBack.setEnabled(true);				//åé€€æŒ‰é’®å¯ç”¨,æ­¤å¥æ˜¯åé€€æŒ‰é’®å¯ç”¨åˆ¤å®šçš„é€»è¾‘å¼€å§‹ç‚¹
 				  }
 			  }
 
 			  @Override
 			  public void changed(LocationEvent e) 
 			  {
-				  // ÕÒµ½ÁËÒ³ÃæÁ´½ÓµØÖ·
-				  combo_URL.setText(e.location);			// ¸Ä±äÁ´½ÓµØÖ·ÏÔÊ¾
+				  // æ‰¾åˆ°äº†é¡µé¢é“¾æ¥åœ°å€
+				  combo_URL.setText(e.location);			// æ”¹å˜é“¾æ¥åœ°å€æ˜¾ç¤º
 				  /**
-				   * ĞÂµÄÒ³ÃæÒÑ¾­´ò¿ª,browserµÄLocationListenerÒÑ¾­¼àÌıÍê±Ï,openNewItem»Ø¸´Ä¬ÈÏÖµ
+				   * æ–°çš„é¡µé¢å·²ç»æ‰“å¼€,browserçš„LocationListenerå·²ç»ç›‘å¬å®Œæ¯•,openNewItemå›å¤é»˜è®¤å€¼
 				   */
 				  if(openNewItem==true)
 				  {
 					  openNewItem=false;
 				  }
 			  }
-		  	});
+			});
 		/**
-	  	 * ÏÔÊ¾Ò³ÃæµÄÌáÊ¾Óï¾ä£¬ÔÚĞÂµÄÒ³Ãæµ¼ÈëÊ±·¢Éú
-	  	 */
-	  	browser.addTitleListener(new TitleListener() 
-	  	{
-	  		@Override
-	  		public void changed(TitleEvent e) 
-	  		{
-	  			TabItem item =tabFolder.getItem(tabFolder.getSelectionIndex());
-	  			item.setText(e.title);
-	  			item.setToolTipText(e.title);//±êÇ©ÏÔÊ¾ÌáÊ¾·û
-	  		}
-	  	});
-	  	combo_URL.addKeyListener(new KeyAdapter() {// ÊÖ¶¯ÊäÈëµØÖ·À¸ºó£¬°´»Ø³µ¼ü×ªµ½ÏàÓ¦ÍøÖ·
-	  	   @Override
-	  	   public void keyReleased(KeyEvent e) {
-	  	    if (e.keyCode == SWT.CR) {//»Ø³µ¼ü´¥·¢ÊÂ¼ş
-	  	     TabItem item=tabFolder.getItem(tabFolder.getSelectionIndex());
-	  	     browser=(Browser) item.getControl();
-	  	     browser.setUrl(combo_URL.getText());
-	  	    }
-	  	   }
-	  	  });
-	  	browser.addProgressListener(new ProgressAdapter() {
-	  	   
+		 * æ˜¾ç¤ºé¡µé¢çš„æç¤ºè¯­å¥ï¼Œåœ¨æ–°çš„é¡µé¢å¯¼å…¥æ—¶å‘ç”Ÿ
+		 */
+		
+		browser.addTitleListener(new TitleListener() 
+		{
+			@Override
+			public void changed(TitleEvent e) 
+			{
+				TabItem item =tabFolder.getItem(tabFolder.getSelectionIndex());
+				item.setText(e.title);
+				item.setToolTipText(e.title);//æ ‡ç­¾æ˜¾ç¤ºæç¤ºç¬¦
+			}
+		});
+		
+		//å›è½¦è§¦å‘äº‹ä»¶
+		combo_URL.addKeyListener(new KeyAdapter() {// æ‰‹åŠ¨è¾“å…¥åœ°å€æ åï¼ŒæŒ‰å›è½¦é”®è½¬åˆ°ç›¸åº”ç½‘å€
+		   @Override
+		   public void keyReleased(KeyEvent e) {
+		    if (e.keyCode == SWT.CR) {//å›è½¦é”®è§¦å‘äº‹ä»¶
+		     TabItem item=tabFolder.getItem(tabFolder.getSelectionIndex());
+		     browser=(Browser) item.getControl();
+		     browser.setUrl(combo_URL.getText());
+		
+		   if(count<5)
+		{
+			array[count]=combo_URL.getText();
+				mntmHistory_1.setText(array[0]);
+				mntmHistory_2.setText(array[1]);
+				mntmHistory_3.setText(array[2]);
+				mntmHistory_4.setText(array[3]);
+				mntmHistory_5.setText(array[4]);
+				count++;	
+				
+		}
+		   else{
+			   count=count-5;
+			 array[count]=combo_URL.getText();
+			mntmHistory_1.setText(array[0]);
+			mntmHistory_2.setText(array[1]);
+			mntmHistory_3.setText(array[2]);
+			mntmHistory_4.setText(array[3]);
+			mntmHistory_5.setText(array[4]);
+			count++;	
+		   }
+		
+		    }
+		   }
+		  });
+		browser.addProgressListener(new ProgressAdapter() {
+		
 		@Override
-	  	   public void changed(ProgressEvent e) {//±¾ÊÂ¼ş²»¶Ï·¢ÉúÓÚÒ³ÃæµÄµ¼Èë¹ı³ÌÖĞ
-	  	    progressBar.setMaximum(e.total);// e.total±íÊ¾´Ó×î¿ªÊ¼Ò³Ãæµ½×îÖÕÒ³ÃæµÄÊıÖµ
-	  	    progressBar.setSelection(e.current);
-	  	    if (e.current != e.total) {//Ò³Ãæ»¹Ã»ÍêÈ«µ¼Èë
-	  	    	loadCompleted=false;
-	  	     progressBar.setVisible(true);// Ò³ÃæµÄµ¼ÈëÇé¿öÀ¸¿É¼û
-	  	     btnStop.setEnabled(true);
-	  	    } else {
-	  	    	btnStop.setEnabled(false);
-	  	    	loadCompleted=true;
-	  	     progressBar.setVisible(false);// Ò³Ãæµ¼ÈëÇé¿öÀ¸²»¿É¼û
-	  	    }
-	  	   }
-	  	   @Override
-	  	   public void completed(ProgressEvent arg0) {//·¢ÉúÔÚÒ»´Îµ¼ÈëÒ³ÃæÊ±,±¾¼àÌıÆ÷changedÊÂ¼ş×îºóÒ»´Î·¢ÉúÖ®Ç°
-	  	   url=combo_URL.getText();
-	  	   addUrlToCombo(combo_URL.getText());
-	  	   save(url);
-	  	   }
-	  	  });
-	  	browser.addStatusTextListener(new StatusTextListener() {
-	  	   
+		   public void changed(ProgressEvent e) {//æœ¬äº‹ä»¶ä¸æ–­å‘ç”Ÿäºé¡µé¢çš„å¯¼å…¥è¿‡ç¨‹ä¸­
+		    progressBar.setMaximum(e.total);// e.totalè¡¨ç¤ºä»æœ€å¼€å§‹é¡µé¢åˆ°æœ€ç»ˆé¡µé¢çš„æ•°å€¼
+		    progressBar.setSelection(e.current);
+		    if (e.current != e.total) {//é¡µé¢è¿˜æ²¡å®Œå…¨å¯¼å…¥
+			loadCompleted=false;
+		     progressBar.setVisible(true);// é¡µé¢çš„å¯¼å…¥æƒ…å†µæ å¯è§
+		     btnStop.setEnabled(true);
+		    } else {
+			btnStop.setEnabled(false);
+			loadCompleted=true;
+		     progressBar.setVisible(false);// é¡µé¢å¯¼å…¥æƒ…å†µæ ä¸å¯è§
+		    }
+		   }
+		   @Override
+		   public void completed(ProgressEvent arg0) {//å‘ç”Ÿåœ¨ä¸€æ¬¡å¯¼å…¥é¡µé¢æ—¶,æœ¬ç›‘å¬å™¨changedäº‹ä»¶æœ€åä¸€æ¬¡å‘ç”Ÿä¹‹å‰
+		   url=combo_URL.getText();
+		   addUrlToCombo(combo_URL.getText());
+		   save(url);                                 //è°ƒç”¨saveå‡½æ•°å­˜å‚¨å†å²è®°å½•
+		   }
+		  });
+		
+		browser.addStatusTextListener(new StatusTextListener() {
+		
 
 		public void changed(StatusTextEvent e) {
-	  	    if (loadCompleted == false) {
-	  	     lblStatus.setText(e.text);
-	  	    } 
-	  	    else {
-				newUrl=e.text;
-			}
-	  	   }
-	  	  });
-	  	browser.addOpenWindowListener(new OpenWindowListener() {// ÔÚµ±Ç°Ò³ÃæÖĞ´ò¿ªµã»÷µÄÁ´½ÓÒ³Ãæ
-	  	 
+		    if (loadCompleted == false) {
+		     lblStatus.setText(e.text);               //åœ¨åº•éƒ¨çŠ¶æ€æ æ˜¾ç¤ºé“¾æ¥ä¿¡æ¯
+		    } 	
+		   }
+		  });
+		browser.addOpenWindowListener(new OpenWindowListener() {// åœ¨å½“å‰é¡µé¢ä¸­æ‰“å¼€ç‚¹å‡»çš„é“¾æ¥é¡µé¢
+		
 			public void open(WindowEvent e) {
-	  	      Browser browser_new = new Browser(tabFolder, SWT.NONE);
-	  	      TabItem tabItem_new = new TabItem(tabFolder, SWT.NONE);
-	  	      tabItem_new.setControl(browser_new);
-	  	      tabFolder.setSelection(tabItem_new);//ĞÂ´ò¿ªµÄÒ³Ãæ±êÇ©ÖÃ¶¥
-	  	      tabFolder.redraw();//Ë¢ĞÂÈİÆ÷
-	  	      openNewItem=true;//ĞÂµÄÒ³ÃæÔÚĞÂµÄ±êÇ©ÖĞ´ò¿ª
-	  	      e.browser = browser_new;
-	  	    e.display.asyncExec(new Runnable(){
-	  	       public void run() {
-	  	        method(); 
-	  	       }
-	  	      });
-	  	     }
-	  	    });
-	  	browser.addCloseWindowListener(new CloseWindowListener(){
-	  	   public void close(WindowEvent e) {
-	  		 TabItem item=tabFolder.getItem(tabFolder.getSelectionIndex());
-	  	     browser=(Browser) item.getControl();
-	  	    browser.dispose();
-	  	   }
-	  	  });
-	  	 btnBack.addSelectionListener(new SelectionAdapter() {
-	  	   @Override
-	  	   public void widgetSelected(SelectionEvent arg0) {
-	  	    if (browser.isBackEnabled()){//±¾´Î¿ÉºóÍË
-	  	     browser.back();
-	  	     btnForword.setEnabled(true);//ÏÂ´Î¿ÉÇ°½ø£¬Ç°½ø°´Å¥¿ÉÓÃ
-	  	     //System.out.println("¿ÉºóÍË");//µ÷ÊÔÓï¾ä
-	  	    }
-	  	    if(!browser.isBackEnabled()){//ÏÂ´Î²»¿ÉºóÍË£¬ºóÍË°´Å¥²»¿ÉÓÃ
-	  	     btnBack.setEnabled(false);
-	  	    }
-	  	   }
-	  	  });
-	  	 btnForword.addSelectionListener(new SelectionAdapter() {
-	  		 public void widgetSelected(SelectionEvent arg0){
-	  			if (browser.isForwardEnabled()){//±¾´Î¿ÉÇ°½ø
-	  			     browser.forward();
-	  			     btnBack.setEnabled(true);//ºóÍË°´Å¥¿ÉÓÃ
-	  			     //System.out.println("¿ÉÏòÇ°");//µ÷ÊÔÓï¾ä
-	  			    }
-	  			    if(!browser.isForwardEnabled()){//ÏÂ´Î²»¿ÉÇ°½ø£¬Ç°½ø°´Å¥²»¿ÉÓÃ
-	  			     btnForword.setEnabled(false);     
-	  			    }
-	  		 }
+		      Browser browser_new = new Browser(tabFolder, SWT.NONE);
+		      TabItem tabItem_new = new TabItem(tabFolder, SWT.NONE);
+		      tabItem_new.setControl(browser_new);
+		      tabFolder.setSelection(tabItem_new);//æ–°æ‰“å¼€çš„é¡µé¢æ ‡ç­¾ç½®é¡¶
+		      tabFolder.redraw();//åˆ·æ–°å®¹å™¨
+		      openNewItem=true;//æ–°çš„é¡µé¢åœ¨æ–°çš„æ ‡ç­¾ä¸­æ‰“å¼€
+		      e.browser = browser_new;
+		    e.display.asyncExec(new Runnable(){                //asyncExecèƒ½ç›´æ¥è¿”å›ï¼Œä¸ç­‰å¾…runnableä¸­ä»£ç è¢«æ‰§è¡Œå®Œ
+		       public void run() {
+		        method(); 
+		       }
+		      });
+		     }
+		    });
+		browser.addCloseWindowListener(new CloseWindowListener(){
+		   public void close(WindowEvent e) {
+			 TabItem item=tabFolder.getItem(tabFolder.getSelectionIndex());
+		     browser=(Browser) item.getControl();
+		    browser.dispose();                         //é‡Šæ”¾ç”±æ­¤äº§ç”Ÿçš„å±å¹•èµ„æº
+		   }
+		  });
+		//åé€€æŒ‰é’®
+		 btnBack.addSelectionListener(new SelectionAdapter() {
+		   @Override
+		   public void widgetSelected(SelectionEvent arg0) {
+		    if (browser.isBackEnabled()){//æœ¬æ¬¡å¯åé€€
+		     browser.back();
+		     btnForword.setEnabled(true);//ä¸‹æ¬¡å¯å‰è¿›ï¼Œå‰è¿›æŒ‰é’®å¯ç”¨
+		     //System.out.println("å¯åé€€");//è°ƒè¯•è¯­å¥
+		    }
+		    if(!browser.isBackEnabled()){//ä¸‹æ¬¡ä¸å¯åé€€ï¼Œåé€€æŒ‰é’®ä¸å¯ç”¨
+		     btnBack.setEnabled(false);
+		    }
+		   }
+		  });
+		 //å‰è¿›æŒ‰é’®
+		 btnForword.addSelectionListener(new SelectionAdapter() {
+			 public void widgetSelected(SelectionEvent arg0){
+				if (browser.isForwardEnabled()){//æœ¬æ¬¡å¯å‰è¿›
+				     browser.forward();
+				     btnBack.setEnabled(true);//åé€€æŒ‰é’®å¯ç”¨
+				     //System.out.println("å¯å‘å‰");//è°ƒè¯•è¯­å¥
+				    }
+				    if(!browser.isForwardEnabled()){//ä¸‹æ¬¡ä¸å¯å‰è¿›ï¼Œå‰è¿›æŒ‰é’®ä¸å¯ç”¨
+				     btnForword.setEnabled(false);     
+				    }
+			 }
 		});
-	  	btnStop.addSelectionListener(new SelectionAdapter() {
-	  	   @Override
-	  	   public void widgetSelected(SelectionEvent arg0) {
-	  	    browser.stop();
-	  	   }
-	  	  });
-	  	btnRefresh.addSelectionListener(new SelectionAdapter() {
-	  		@Override
-	  		public void widgetSelected(SelectionEvent arg0){
-	  			if(combo_URL.getText()!=null){
-	  				url=combo_URL.getText();
-	  				browser.setUrl(url);
-	  			}
-	  			else{
-	  				browser.setUrl(homePage);
-	  			}
-	  		}
+		 //åœæ­¢æŒ‰é’®
+		btnStop.addSelectionListener(new SelectionAdapter() {
+		   @Override
+		   public void widgetSelected(SelectionEvent arg0) {
+		    browser.stop();
+		   }
+		  });
+		//åˆ·æ–°æŒ‰é’®
+		btnRefresh.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent arg0){
+				if(combo_URL.getText()!=null){
+					url=combo_URL.getText();
+					browser.setUrl(url);
+				}
+				else{
+					browser.setUrl(homePage);
+				}
+			}
 		});
+		
+		//æ˜¾ç¤ºä¸»é¡µ
 		btnPage.addSelectionListener(new SelectionAdapter() {
 			@Override
-	  		public void widgetSelected(SelectionEvent arg0){
-	  				browser.setUrl(homePage);
-	  		}
+			public void widgetSelected(SelectionEvent arg0){
+					browser.setUrl(homePage);               
+			}
 		});
+		
+		//è·å–IP
 		btnGetIP.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent arg0){
@@ -553,8 +683,9 @@ public class browser {
 					try 
 					{
 						iAddress = InetAddress.getByName(url3);
-						//ÔÚcomboIpÖĞÊäÈëµÃµ½µÄIP
+						//åœ¨comboIpä¸­è¾“å…¥å¾—åˆ°çš„IP
 						combo_IP.setText(iAddress.getHostAddress().toString());
+						//è°ƒç”¨å‡½æ•°å®ç°ç‚¹å‡»IPæ ä¸‹æ‹‰æ¡†èƒ½æ˜¾ç¤ºå†å²è®°å½•å¹¶ç‚¹å‡»èƒ½å®ç°è·³è½¬çš„åŠŸèƒ½
 						addIpToCombo(iAddress.getHostAddress().toString());
 					} 
 					catch (UnknownHostException e1) 
@@ -567,14 +698,21 @@ public class browser {
 			}
 		});
 		 combo_URL.addSelectionListener(new SelectionListener() {
-	            public void widgetSelected(SelectionEvent evt) {
-	                browser.setUrl(combo_URL.getText());
-	            }
-	 
-	            public void widgetDefaultSelected(SelectionEvent evt) {
-	 
-	            }
-	        });
+			
+			@Override
+			public void widgetSelected(SelectionEvent arg0) {
+                browser.setUrl(combo_URL.getText());
+
+
+			}
+			
+			@Override
+			public void widgetDefaultSelected(SelectionEvent arg0) {
+				// TODO Auto-generated method stub
+				
+			}
+		});
+//è·å–å†å²è®°å½•
 		 btnHistory.addSelectionListener(new SelectionAdapter() {
 			 public void widgetSelected(SelectionEvent arg0){
 				 try {
@@ -585,12 +723,13 @@ public class browser {
 				}
 			 }
 		});
+//è·å–ç½‘é¡µæºä»£ç 
 		 btnSource.addSelectionListener(new SelectionAdapter() 
 		  {
 			  @Override
 				public void widgetDefaultSelected(SelectionEvent arg0) 
 				{
-					// TODO ×Ô¶¯Éú³ÉµÄ·½·¨´æ¸ù
+					// TODO è‡ªåŠ¨ç”Ÿæˆçš„æ–¹æ³•å­˜æ ¹
 					
 				}
 				@Override
@@ -604,19 +743,19 @@ public class browser {
 			            // TODO Auto-generated catch block
 			            e1.printStackTrace();
 			        }
-					//µ¯³öĞÅÏ¢Ãæ°åÏÔÊ¾ä¯ÀÀ¼ÇÂ¼
+					//å¼¹å‡ºä¿¡æ¯é¢æ¿æ˜¾ç¤ºæµè§ˆè®°å½•
 					try 
 					{
 						new outPutHistory(Source);
 					} 
 					catch (IOException e) 
 					{
-						// TODO ×Ô¶¯Éú³ÉµÄ catch ¿é
+						// TODO è‡ªåŠ¨ç”Ÿæˆçš„catch å—
 						e.printStackTrace();
 					}
 				}
 		  });
-		//»ñÈ¡Ping
+		//è·å–Ping
 		  btnPing.addSelectionListener(new SelectionAdapter() 
 		  {
 			  @Override
@@ -626,7 +765,9 @@ public class browser {
 					String serverIP = "127.0.0.1";
 
 					try {
+						//å–å¾—å½“å‰JVMçš„è¿è¡Œæ—¶ç¯å¢ƒ
 						Runtime ce = Runtime.getRuntime();
+						//æ‰§è¡Œå‘½ä»¤
 						InputStream in = (InputStream) ce.exec("ping " + serverIP).getInputStream();
 						BufferedInputStream bin = new BufferedInputStream(in);
 						byte pingInfo[] = new byte[100];
@@ -645,7 +786,7 @@ public class browser {
 						} 
 						catch (IOException e1) 
 						{
-							// TODO ×Ô¶¯Éú³ÉµÄ catch ¿é
+							// TODO è‡ªåŠ¨ç”Ÿæˆçš„catch å—
 							e1.printStackTrace();
 						}
 						
@@ -656,6 +797,7 @@ public class browser {
 
 				}
 		  });
+		  //æ·»åŠ åˆ°æ”¶è—å¤¹
 		  btnAdd.addSelectionListener(new SelectionAdapter() {
 				@Override
 				public void widgetSelected(SelectionEvent e) {
@@ -681,17 +823,18 @@ public class browser {
 				}
 			});
 	}
+	//æ·»åŠ åˆ°å†å²è®°å½•
 	public void save(String history) 
 	{
         try 
         {
-        	Date data = new Date(); 
-        	SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
+	Date data = new Date(); 
+	SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss"); //æ ¼å¼åŒ–è¾“å‡ºæ—¥æœŸ
 	        String time=dateFormat.format(data); 
-        	String filePath="History.txt";
+	String filePath="History.txt";
             FileWriter fw = new FileWriter(filePath, true);
             BufferedWriter bw = new BufferedWriter(fw);
-            bw.append(time+"  "+history+"\r\n");
+            bw.append(time+""+history+"\r\n");
             bw.close();
             fw.close();
         } 
@@ -702,12 +845,12 @@ public class browser {
         }
 	}
 	
-	//¶ÁÈ¡¼ÇÂ¼´ÓtextÖĞ
+	//è¯»å–è®°å½•ä»textä¸­
 	public String readHistory() 
 	{
         try 
         {
-        	String filePath="History.txt";
+	String filePath="History.txt";
             FileReader fw = new FileReader(filePath);
             BufferedReader rw=new BufferedReader(fw);      
             int temp=0;   
@@ -728,17 +871,17 @@ public class browser {
         return null;
 	}
 	
-	//ĞÂ½¨´°¿ÚÊä³ö¼ÇÂ¼
+	//æ–°å»ºçª—å£è¾“å‡ºè®°å½•
 	class outPutHistory extends JFrame 
 	{
 	    private static final long serialVersionUID = 1L;
 	    JTextArea ta = null;
 	    JScrollPane jsp = null;
-	    //Ö»ÒªÒ»¸ö²ÎÊı
+	    //åªè¦ä¸€ä¸ªå‚æ•°
 	    outPutHistory(String txt) throws IOException 
 	    {
 	        this.setVisible(true);
-	        this.setBounds(500, 200, 800, 600);
+	        this.setBounds(200, 200, 600, 800);
 	        this.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
 	        ta = new JTextArea();
 	        jsp = new JScrollPane(ta);
@@ -747,11 +890,12 @@ public class browser {
 	        validate();
 	    }
 	} 
+	//æ–°å»ºæ ‡ç­¾é¡¹
 	 private Browser openNewBrowserTab() {  
 		    Browser browser_new = new Browser(tabFolder, SWT.NONE);
 		    initialize(browser); 
- 	        TabItem tabItem_new = new TabItem(tabFolder, SWT.NONE);
- 	        tabItem_new.setControl(browser_new);
+	        TabItem tabItem_new = new TabItem(tabFolder, SWT.NONE);
+	        tabItem_new.setControl(browser_new);
 	        tabFolder.setSelection(tabItem_new);      
 	        tabItem_new.setText(DEFAULT_BLANK_URL);  
 	        tabItem_new.setToolTipText(DEFAULT_BLANK_URL);  
@@ -761,30 +905,30 @@ public class browser {
 	        return browser;
 	    }  
 	 private void initialize(final Browser browser) {  
-	        browser.addOpenWindowListener(new OpenWindowListener() {    //´ò¿ªÒ»¸öĞÂµÄä¯ÀÀÆ÷´°¿ÚÊÂ¼ş  
+	        browser.addOpenWindowListener(new OpenWindowListener() {    //æ‰“å¼€ä¸€ä¸ªæ–°çš„æµè§ˆå™¨çª—å£äº‹ä»¶
 	            public void open(WindowEvent event) {  
 	                event.browser = openNewBrowserTab();  
 	                event.display.asyncExec(new Runnable(){
-	     	  	       public void run() {
-	     	  	        method(); 
-	     	  	       }
-	     	  	      });
+			       public void run() {
+			        method(); 
+			       }
+			      });
 	            }  
 	        });  
 	 }
-	 private void addUrlToCombo(String url){  
+	 private void addUrlToCombo(String url){  //åˆ¤æ–­urlæ˜¯å¦å·²ç»è¢«å­˜å‚¨
 	        if(!DEFAULT_BLANK_URL.equals(url)){  
 	            int index = combo_URL.indexOf(url);   
 	            if(index == -1){  
 	                combo_URL.add(url, 0);  
 	            }  
-	            combo_URL.select(0);  
+	
 	            if(combo_URL.getItemCount() > 50){  
 	                combo_URL.remove(50, combo_URL.getItemCount()-1);  
 	            }  
 	        }  
 	    } 
-	 private void addIpToCombo(String ip){
+	 private void addIpToCombo(String ip){//åˆ¤æ–­IPæ˜¯å¦å·²ç»è¢«å­˜å‚¨
 		 int index=combo_IP.indexOf(ip);
 		 if(index ==-1){
 			 combo_IP.add(ip,0);
@@ -792,18 +936,18 @@ public class browser {
 			 if(combo_IP.getItemCount()>50){
 				 combo_IP.remove(50,combo_IP.getItemCount()-1);
 			 }
-			 
+			
 		 }
 	 }
-	//»ñÈ¡Ô´´úÂë
+	//è·å–æºä»£ç 
 		public void getSource (String url) 
 		{
 			try 
 			{
 				String linesep,htmlLine;
-				linesep=System.getProperty("line.separator");
+				linesep=System.getProperty("line.separator"); //æ¢è¡Œç¬¦,åŠŸèƒ½å’Œ"\n"æ˜¯ä¸€è‡´çš„,ä½†æ˜¯æ­¤ç§å†™æ³•å±è”½äº†Windowså’ŒLinuxçš„åŒºåˆ«
 				Source="";
-				//¸ù¾İURLµÃµ½µÄÔ´´úÂë
+				//æ ¹æ®URLå¾—åˆ°çš„æºä»£ç 
 				java.net.URL source =new URL(url);  
 				InputStream in=new BufferedInputStream(source.openStream());
 				BufferedReader br=new BufferedReader(new InputStreamReader(in));
